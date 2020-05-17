@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>test patients</h3>
+
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>name</th>
+			<th>date Naissance</th>
+			<th>malade</th>
+		</tr>
+		<tr th:each="p:${patients}">
+			<td th:text="${p.id}"></td>
+			<td th:text="${p.name}"></td>
+			<td th:text="${p.dateNaissance}"></td>
+			<td th:text="${p.malade}"></td>
+		</tr>
+
+	</table>
+</body>
+</html>
