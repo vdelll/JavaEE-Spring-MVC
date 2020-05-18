@@ -25,5 +25,5 @@ public class Patient {
 	private Date dateNaissance;
 	private boolean malade;
 	
-
+ 
 }
