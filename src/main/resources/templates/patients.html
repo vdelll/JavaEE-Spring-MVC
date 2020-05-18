@@ -11,6 +11,7 @@
 		<div class="card">
 			<div class="card-header">Liste des patients</div>
 			<div class="card-body">
+			
 				<table class="table">
 					<tr>
 						<th>ID</th>
@@ -26,6 +27,15 @@
 					</tr>
 
 				</table>
+
+				<ul class="nav nav-pills">
+					<li th:each="page,status:${pages}">
+						
+						<a th:class="${status.index == currentPage?'btn btn-primary':'btn'}"
+						th:href="@{patients(page=${status.index})}"
+						th:text="${status.index}"></a></li>
+
+				</ul>
 			</div>
 
 		</div>
