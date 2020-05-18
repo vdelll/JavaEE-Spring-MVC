@@ -24,6 +24,15 @@ public class PatientController {
 		return "index";
 	}
 
+	/**
+	 * Affiche les patients.
+	 * 
+	 * @param model
+	 * @param page  : sélectionnée
+	 * @param size  : nombre de patient par page
+	 * @param kw    : nom du champ de recherche
+	 * @return
+	 */
 	@GetMapping(path = "/patients")
 	public String list(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "5") int size,
@@ -46,6 +55,15 @@ public class PatientController {
 		return "patients";
 	}
 
+	/**
+	 * Permet de supprimer un patient.
+	 * 
+	 * @param id
+	 * @param keyword
+	 * @param page
+	 * @param size
+	 * @return
+	 */
 	@GetMapping(path = "/deletePatient")
 	public String delete(Long id, String keyword, int page, int size) {
 		patientRepository.deleteById(id);
