@@ -13,8 +13,8 @@
 			<div class="card-body">
 				<form method="get" th:action="@{patients}">
 					<div class="form-group">
-						<label>Nom </label> 
-						<input type="text" name="keyword" th:value="${keyword}">
+						<label>Nom </label> <input type="text" name="keyword"
+							th:value="${keyword}">
 						<button class="btn btn-primary">Rechercher</button>
 					</div>
 				</form>
@@ -30,6 +30,11 @@
 						<td th:text="${p.name}"></td>
 						<td th:text="${p.dateNaissance}"></td>
 						<td th:text="${p.malade}"></td>
+						<td><a
+							onclick="return confirm('Etes vous sur de vouloir supprimer ?')"
+							class="btn btn-danger" 
+							th:href="@{deletePatient(id=${p.id}, keyword=${keyword}, size=${size}, page=${currentPage})}">
+								Supprimer</a></td>
 					</tr>
 
 				</table>

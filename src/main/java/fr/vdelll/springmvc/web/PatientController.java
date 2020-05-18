@@ -15,30 +15,41 @@ import fr.vdelll.springmvc.entities.Patient;
 
 @Controller
 public class PatientController {
-	
+
 	@Autowired
 	private PatientRepository patientRepository;
-	
+
 	@GetMapping(path = "/index")
 	public String index() {
 		return "index";
 	}
-	
+
 	@GetMapping(path = "/patients")
-	public String list(Model model,
-			@RequestParam(name = "page", defaultValue = "0") int page, 
+	public String list(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "5") int size,
 			@RequestParam(name = "keyword", defaultValue = "") String kw) {
-		
+
 		Page<Patient> pagePatients = patientRepository.findByNameContains(kw, PageRequest.of(page, size));
-		
+
+		// Test lorsque tous les patients d'une page ont été supprimés
+		if (pagePatients.getTotalPages() - 1 < page) {
+			page--;
+			pagePatients = patientRepository.findByNameContains(kw, PageRequest.of(page, size));
+		}
+
 		model.addAttribute("patients", pagePatients.getContent());
 		model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("size", size);
 		model.addAttribute("keyword", kw);
-		
+
 		return "patients";
+	}
+
+	@GetMapping(path = "/deletePatient")
+	public String delete(Long id, String keyword, int page, int size) {
+		patientRepository.deleteById(id);
+		return "redirect:/patients?page=" + page + "&keyword=" + keyword + "&size=" + size;
 	}
 
 }
