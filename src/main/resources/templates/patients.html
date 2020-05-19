@@ -25,17 +25,25 @@
 							<th>name</th>
 							<th>date Naissance</th>
 							<th>malade</th>
+							<th>score</th>
+							<th></th>
 						</tr>
 						<tr th:each="p:${patients}">
 							<td th:text="${p.id}"></td>
 							<td th:text="${p.name}"></td>
 							<td th:text="${p.dateNaissance}"></td>
 							<td th:text="${p.malade}"></td>
+							<td th:text="${p.score}"></td>
 							<td><a
+								class="btn btn-success"
+								th:href="@{editPatient(id=${p.id})}">
+									Editer</a>
+									<a
 								onclick="return confirm('Etes vous sur de vouloir supprimer ?')"
 								class="btn btn-danger"
 								th:href="@{deletePatient(id=${p.id}, keyword=${keyword}, size=${size}, page=${currentPage})}">
-									Supprimer</a></td>
+									Supprimer</a>
+							</td>
 						</tr>
 
 					</table>
