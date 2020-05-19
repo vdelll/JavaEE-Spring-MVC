@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.vdelll.springmvc.dao.PatientRepository;
 import fr.vdelll.springmvc.entities.Patient;
@@ -82,16 +84,53 @@ public class PatientController {
 	@GetMapping(path = "/formPatient")
 	public String formPatient(Model model) {
 		model.addAttribute("patient", new Patient());
+		model.addAttribute("mode", "new");
 		return "formPatient";
 	}
 	
 	@PostMapping("/savePatient")
-	public String savePatient(@Valid Patient patient, BindingResult bindingResult) {
+	public String savePatient(Model model, @Valid Patient patient, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) return "formPatient";
 		
 		patientRepository.save(patient);
+		
+		model.addAttribute("patient", patient);
+		
+		return "confirmation";
+	}
+	
+	/**
+	 * Redirige vers le formulaire permettant la modification d'un patient
+	 * 
+	 * @return
+	 */
+	@GetMapping(path = "/editPatient")
+	public String editPatient(Model model, Long id) {
+		Patient p = patientRepository.findById(id).get();
+		model.addAttribute("patient", p);
+		model.addAttribute("mode", "edit");
 		return "formPatient";
+	}
+	
+	/**
+	 * Retourne la liste des patients au format JSON
+	 * @return
+	 */
+	@GetMapping("/listPatients")
+	@ResponseBody
+	public List<Patient> list() {
+		return patientRepository.findAll();
+	}
+	
+	/**
+	 * Retourne un patient au format JSON
+	 * @return
+	 */
+	@GetMapping("/patient/{id}")
+	@ResponseBody
+	public Patient getOne(@PathVariable Long id) {
+		return patientRepository.findById(id).get();
 	}
 
 }
