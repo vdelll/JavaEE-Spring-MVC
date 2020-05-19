@@ -47,7 +47,7 @@ public class PatientController {
 		Page<Patient> pagePatients = patientRepository.findByNameContains(kw, PageRequest.of(page, size));
 
 		// Test lorsque tous les patients d'une page ont été supprimés
-		if (pagePatients.getTotalPages() - 1 < page) {
+		if (pagePatients.getTotalPages() - 1 < page && pagePatients.getTotalPages() != 0) {
 			page--;
 			pagePatients = patientRepository.findByNameContains(kw, PageRequest.of(page, size));
 		}
