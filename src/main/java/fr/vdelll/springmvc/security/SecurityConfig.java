@@ -38,28 +38,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.dataSource(dataSource)
 				.usersByUsernameQuery("SELECT username AS principal, password AS credentials, active FROM users WHERE username=?")
 				.authoritiesByUsernameQuery("SELECT username AS principal, role AS role FROM users_roles WHERE username=?")
-				.passwordEncoder(passwordEncoder);
+				.passwordEncoder(passwordEncoder)
+				.rolePrefix("ROLE_");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 		// Utilisation d'un formulaire d'authentification
-		http.formLogin();
+		http.formLogin().loginPage("/login");
 		// http.httpBasic(); // authentification de http sous forme de pop up
 
 		// Limitation de certaines requêtes
 		http.authorizeRequests().antMatchers("/admin/**", "/save**/**", "/delete**/**", "/form**/**").hasRole("ADMIN");
 		http.authorizeRequests().antMatchers("/patients**/**").hasRole("USER");
-
+		// Toutes les ressources sont accessible pour les url contenant /user/**
+		http.authorizeRequests().antMatchers("/user/**", "/connect", "/webjars/**", "/login").permitAll();
+		
 		// Toutes les requetes HTTP nécessitent de passer par une authentification
-		// http.authorizeRequests().anyRequest().authenticated();
+		http.authorizeRequests().anyRequest().authenticated();
 
 		// Appliqué par défaut
 		http.csrf();
-
-		// Toutes les ressources sont accessible pour les url contenant /user/**
-		http.authorizeRequests().antMatchers("/user/**").permitAll();
 
 		// Redirige vers la page notAuthorized si erreur 403
 		http.exceptionHandling().accessDeniedPage("/notAuthorized");
