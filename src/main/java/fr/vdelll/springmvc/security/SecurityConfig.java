@@ -34,12 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// http.httpBasic(); // authentification de http sous forme de pop up
 		
 		// Limitation de certaines requêtes
-		http.authorizeRequests().antMatchers("/save**/**", "/delete**/**").hasRole("ADMIN");
+		http.authorizeRequests().antMatchers("/save**/**", "/delete**/**", "/form**/**").hasRole("ADMIN");
 		
 		// Toutes les requetes HTTP nécessitent de passer par une authentification
 		http.authorizeRequests().anyRequest().authenticated(); 
 		
 		http.csrf();
+		
+		// Redirige vers la page notAuthorized si erreur 403
+		http.exceptionHandling().accessDeniedPage("/notAuthorized");
+		
 	}
 	
 	/**
