@@ -35,9 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// Limitation de certaines requêtes
 		http.authorizeRequests().antMatchers("/save**/**", "/delete**/**", "/form**/**").hasRole("ADMIN");
+		http.authorizeRequests().antMatchers("/patients**/**").hasRole("USER");
 		
 		// Toutes les requetes HTTP nécessitent de passer par une authentification
-		http.authorizeRequests().anyRequest().authenticated(); 
+		// http.authorizeRequests().anyRequest().authenticated(); 
 		
 		http.csrf();
 		
